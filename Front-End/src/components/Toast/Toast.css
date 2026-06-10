@@ -1,0 +1,182 @@
+/* ════════════════════════════════════════════════
+   YouTube-style Floating Toast Notifications
+   Position: bottom-right
+   Supports: success | error | info | warning
+   Supports: light & dark themes via CSS vars
+════════════════════════════════════════════════ */
+
+.yt-toast-container {
+  position: fixed;
+  bottom: 28px;
+  right: 24px;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+  max-width: 380px;
+  width: calc(100vw - 48px);
+}
+
+/* ── Base toast ── */
+.yt-toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.07),
+    0 16px 32px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 500;
+  pointer-events: all;
+  border: 1px solid transparent;
+  min-width: 280px;
+}
+
+/* ── Animations ── */
+@keyframes yt-toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes yt-toast-out {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(80%) scale(0.92);
+  }
+}
+
+.yt-toast--enter {
+  animation: yt-toast-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.yt-toast--exit {
+  animation: yt-toast-out 0.3s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+}
+
+/* ── Icon ── */
+.yt-toast__icon {
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Message ── */
+.yt-toast__message {
+  flex: 1;
+  color: inherit;
+}
+
+/* ── Close button ── */
+.yt-toast__close {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 50%;
+  opacity: 0.6;
+  transition: opacity 0.15s, background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  margin-top: 1px;
+}
+
+.yt-toast__close:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ═══════════════════════════════════════════
+   LIGHT theme variants
+═══════════════════════════════════════════ */
+:root .yt-toast--success,
+[data-theme="light"] .yt-toast--success {
+  background: #f0fdf4;
+  border-color: #86efac;
+  color: #15803d;
+}
+
+:root .yt-toast--error,
+[data-theme="light"] .yt-toast--error {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #b91c1c;
+}
+
+:root .yt-toast--info,
+[data-theme="light"] .yt-toast--info {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  color: #1d4ed8;
+}
+
+:root .yt-toast--warning,
+[data-theme="light"] .yt-toast--warning {
+  background: #fffbeb;
+  border-color: #fcd34d;
+  color: #b45309;
+}
+
+/* ═══════════════════════════════════════════
+   DARK theme variants
+═══════════════════════════════════════════ */
+[data-theme="dark"] .yt-toast--success {
+  background: rgba(22, 163, 74, 0.18);
+  border-color: rgba(134, 239, 172, 0.35);
+  color: #86efac;
+}
+
+[data-theme="dark"] .yt-toast--error {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(252, 165, 165, 0.35);
+  color: #fca5a5;
+}
+
+[data-theme="dark"] .yt-toast--info {
+  background: rgba(59, 130, 246, 0.18);
+  border-color: rgba(147, 197, 253, 0.35);
+  color: #93c5fd;
+}
+
+[data-theme="dark"] .yt-toast--warning {
+  background: rgba(245, 158, 11, 0.18);
+  border-color: rgba(252, 211, 77, 0.35);
+  color: #fcd34d;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .yt-toast-container {
+    bottom: 16px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-width: none;
+  }
+
+  .yt-toast {
+    min-width: 0;
+    width: 100%;
+  }
+}

@@ -1,0 +1,548 @@
+/* ──────────────────────────────────────────────
+   Tweet Detail Page
+────────────────────────────────────────────── */
+@keyframes tdFadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes tdFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Page wrapper ── */
+.tweet-detail-page {
+  min-height: 100vh;
+  margin-left: 100px;
+  padding: 32px 16px 80px;
+  background: var(--bg-primary);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  animation: tdFadeIn 0.25s ease both;
+}
+
+/* ── Centred column ── */
+.tweet-detail-main {
+  width: 100%;
+  max-width: 660px;
+}
+
+/* ── Header ── */
+.tweet-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 18px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+  animation: tdFadeUp 0.3s ease both;
+}
+
+.td-back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.18s, border-color 0.18s, transform 0.14s;
+}
+
+.td-back-btn:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--accent-primary, #e53e3e);
+  color: var(--accent-primary, #e53e3e);
+  transform: translateX(-2px);
+}
+
+.tweet-detail-header h2 {
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* ── Content ── */
+.tweet-detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Tweet card in detail page – entrance animation */
+.tweet-detail-content > .tweet-card,
+.tweet-detail-content > div:first-child .tweet-card {
+  animation: tdFadeUp 0.38s ease 0.08s both;
+}
+
+/* ── Comments section ── */
+.tweet-comments-section {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 20px;
+  animation: tdFadeUp 0.38s ease 0.22s both;
+}
+
+/* ── Comment form (Override accent to red) ── */
+.tweet-comments-section .comment-form input,
+.tweet-comments-section .comment-input {
+  border-radius: 12px;
+  background: var(--bg-primary);
+}
+
+.tweet-comments-section .comment-form input:focus,
+.tweet-comments-section .comment-input:focus {
+  border-color: var(--accent-primary, #e53e3e);
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.12);
+}
+
+.tweet-comments-section .comment-form button,
+.tweet-comments-section .comment-btn {
+  background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+  border-radius: 10px;
+}
+
+.tweet-comments-section .comment-form button:hover,
+.tweet-comments-section .comment-btn:hover {
+  box-shadow: 0 4px 14px rgba(229, 62, 62, 0.35);
+}
+
+/* ── Loading / Not found states ── */
+.tweet-detail-loading,
+.tweet-detail-not-found {
+  color: var(--text-secondary);
+  padding: 56px 24px;
+  text-align: center;
+  font-size: 15px;
+  margin: 60px auto;
+  max-width: 400px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  animation: tdFadeUp 0.3s ease both;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .tweet-detail-page { margin-left: 80px; }
+}
+
+@media (max-width: 768px) {
+  .tweet-detail-page {
+    margin-left: 0;
+    padding: 16px 12px 60px;
+  }
+
+  .tweet-detail-header h2 { font-size: 18px; }
+}
+
+@media (max-width: 480px) {
+  .tweet-comments-section { padding: 14px; }
+}
+
+
+.tweet-detail-header {
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 20px;
+}
+
+.tweet-detail-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.tweet-detail-main {
+  background-color: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+}
+
+.tweet-detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.tweet-card {
+  border-radius: 12px;
+  background: var(--bg-primary);
+  padding: 16px;
+  border: 1px solid var(--border-color);
+}
+
+.tweet-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.tweet-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.tweet-user-info {
+  flex: 1;
+}
+
+.tweet-name {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.tweet-username {
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin-left: 8px;
+}
+
+.tweet-time {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin: 4px 0 0 0;
+  padding: 0;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px;
+  transition: color 0.2s ease;
+  align-self: flex-start;
+}
+
+.delete-btn:hover {
+  color: #ff6b6b;
+}
+
+.tweet-content {
+  margin-bottom: 16px;
+  color: var(--text-primary);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.tweet-content p {
+  margin: 0;
+}
+
+.tweet-actions {
+  display: flex;
+  gap: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color);
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background: var(--bg-tertiary);
+  transform: translateY(-2px);
+}
+
+.action-btn.liked,
+.action-btn.active {
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
+.action-btn.liked:hover,
+.action-btn.active:hover {
+  background: rgba(55, 110, 255, 0.1);
+}
+
+.like-icon,
+.comment-icon,
+.share-icon {
+  font-size: 16px;
+}
+
+.action-btn .count {
+  font-size: 13px;
+  min-width: 20px;
+}
+
+.tweet-comments-section {
+  border-top: 1px solid var(--border-color);
+  padding-top: 20px;
+  margin-top: 20px;
+}
+
+.comments-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.comments-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 16px 0;
+}
+
+.comment-item {
+  display: flex;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.comment-avatar {
+  flex-shrink: 0;
+}
+
+.comment-avatar img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.comment-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.comment-user {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.comment-time {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.comment-content {
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 8px 0 0 0;
+}
+
+.comment-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.like-comment-btn,
+.delete-comment-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 13px;
+  padding: 0;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.like-comment-btn:hover {
+  color: var(--text-primary);
+}
+
+.like-comment-btn.liked {
+  color: var(--accent-primary);
+}
+
+.delete-comment-btn {
+  color: var(--text-secondary);
+}
+
+.delete-comment-btn:hover {
+  color: #ff6b6b;
+}
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 16px;
+}
+
+.comment-form label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.comment-form input,
+.comment-input {
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.comment-form input:focus,
+.comment-input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(55, 110, 255, 0.1);
+}
+
+.comment-form button,
+.comment-btn {
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  align-self: flex-start;
+}
+
+.comment-form button:hover,
+.comment-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(55, 110, 255, 0.3);
+}
+
+.comment-form button:disabled,
+.comment-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.comment-error {
+  color: #ff6b6b;
+  font-size: 13px;
+  margin: 0;
+}
+
+.no-comments {
+  color: var(--text-tertiary);
+  text-align: center;
+  padding: 32px 16px;
+  font-size: 14px;
+}
+
+.tweet-detail-loading,
+.tweet-detail-not-found {
+  color: var(--text-primary);
+  padding: 32px;
+  text-align: center;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  margin: 100px 20px;
+  font-size: 16px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .tweet-detail-page {
+    margin-left: 80px;
+    padding: 12px;
+  }
+
+  .tweet-detail-main {
+    padding: 12px;
+  }
+
+  .tweet-card,
+  .comment-item {
+    padding: 12px 8px;
+  }
+
+  .action-btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .tweet-actions {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tweet-detail-page {
+    margin-left: 70px;
+    max-width: 100%;
+  }
+
+  .tweet-card {
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  .tweet-header {
+    gap: 10px;
+  }
+
+  .tweet-avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .action-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+    gap: 6px;
+  }
+
+  .comment-item {
+    gap: 10px;
+    padding: 12px 0;
+  }
+
+  .comment-avatar img {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+

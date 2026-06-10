@@ -1,0 +1,411 @@
+.watch-later-page {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  margin-left: 100px;
+  padding: 32px 40px;
+  transition: background 0.35s ease, color 0.35s ease;
+}
+
+.watch-later-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.watch-later-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.video-count {
+  font-size: 16px;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+/* Header Actions */
+.wl-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.wl-play-btn {
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.wl-play-btn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+/* List View (like playlist) */
+.watch-later-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wl-item {
+  display: flex;
+  gap: 16px;
+  padding: 12px;
+  background: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-items: flex-start;
+}
+
+.wl-item:hover {
+  background: var(--bg-hover);
+  transform: translateX(4px);
+  border-color: var(--accent-primary);
+}
+
+.wl-number {
+  width: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+
+.wl-thumb {
+  position: relative;
+  flex-shrink: 0;
+  width: 180px;
+  aspect-ratio: 16/9;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.wl-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.wl-item:hover .wl-thumb img {
+  transform: scale(1.05);
+}
+
+.wl-duration {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.wl-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.wl-info h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 6px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.wl-channel {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.wl-channel:hover {
+  color: var(--text-primary);
+}
+
+.wl-meta {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.wl-item-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.wl-item:hover .wl-item-actions {
+  opacity: 1;
+}
+
+.wl-action-btn {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.wl-action-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent-primary);
+}
+
+.wl-action-btn.remove:hover {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: white;
+}
+
+/* Drag Handle */
+.drag-handle {
+  cursor: grab;
+  padding: 8px;
+  color: var(--text-tertiary);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.wl-item:hover .drag-handle {
+  opacity: 1;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+/* Empty State */
+.watch-later-empty {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.wl-empty-icon {
+  font-size: 64px;
+  color: var(--text-tertiary);
+  margin-bottom: 16px;
+}
+
+.watch-later-empty h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 8px 0;
+}
+
+.watch-later-empty p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .watch-later-page {
+    padding: 24px 32px;
+  }
+
+  .watch-later-header h1 {
+    font-size: 28px;
+  }
+
+  .wl-thumb {
+    width: 160px;
+  }
+}
+
+@media (max-width: 900px) {
+  .watch-later-page {
+    margin-left: 0;
+    padding: 20px 24px;
+  }
+
+  .watch-later-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .watch-later-header h1 {
+    font-size: 24px;
+  }
+
+  .wl-thumb {
+    width: 140px;
+  }
+
+  .wl-info h4 {
+    font-size: 15px;
+  }
+
+  .wl-number {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .watch-later-page {
+    padding: 16px 16px;
+  }
+
+  .watch-later-header h1 {
+    font-size: 22px;
+  }
+
+  .wl-item {
+    gap: 12px;
+    padding: 10px;
+  }
+
+  .wl-thumb {
+    width: 120px;
+  }
+
+  .wl-info h4 {
+    font-size: 14px;
+  }
+
+  .wl-channel {
+    font-size: 13px;
+  }
+
+  .wl-meta {
+    font-size: 12px;
+  }
+
+  .wl-item-actions {
+    opacity: 1;
+  }
+
+  .drag-handle {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .watch-later-page {
+    padding: 16px 12px;
+  }
+
+  .watch-later-header h1 {
+    font-size: 20px;
+  }
+
+  .wl-actions {
+    width: 100%;
+  }
+
+  .wl-play-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .wl-item {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .wl-thumb {
+    width: 100%;
+  }
+
+  .wl-item-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100%;
+  }
+
+  .watch-later-empty {
+    padding: 60px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .watch-later-page {
+    padding: 12px 8px;
+  }
+
+  .watch-later-header {
+    margin-bottom: 20px;
+  }
+
+  .watch-later-header h1 {
+    font-size: 18px;
+  }
+
+  .video-count {
+    font-size: 14px;
+  }
+
+  .wl-play-btn {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+
+  .wl-item {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .wl-info h4 {
+    font-size: 13px;
+  }
+
+  .wl-channel {
+    font-size: 12px;
+  }
+
+  .wl-meta {
+    font-size: 11px;
+  }
+
+  .wl-action-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .wl-empty-icon {
+    font-size: 48px;
+  }
+
+  .watch-later-empty h3 {
+    font-size: 16px;
+  }
+
+  .watch-later-empty p {
+    font-size: 13px;
+  }
+}

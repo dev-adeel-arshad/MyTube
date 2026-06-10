@@ -1,0 +1,103 @@
+/* =========================================
+   PREMIUM MINI SIDEBAR (DESKTOP)
+   ========================================= */
+
+.sidebar-nav {
+  position: fixed;
+  left: 0;
+  top: 57px;
+  width: 100px;
+  height: calc(100vh - 57px);
+  background: var(--bg-primary);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+  gap: 6px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 1100;
+  transition: all 0.25s ease;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 8px;
+}
+
+.sidebar-nav-btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  padding: 12px 6px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 10px;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.sidebar-nav-btn:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  transform: translateX(2px);
+}
+
+.sidebar-nav-btn.active {
+  color: var(--accent-primary, #ff0000);
+  background: var(--bg-secondary);
+  border-left-color: var(--accent-primary, #ff0000);
+}
+
+.sidebar-nav-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.sidebar-nav-btn span {
+  font-weight: 600;
+}
+
+.sidebar-nav-btn::after {
+  content: attr(title);
+  position: absolute;
+  left: 110%;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.sidebar-nav-btn:hover::after {
+  opacity: 1;
+}
+
+.sub-arrow {
+  font-weight: bold;
+}
+
+@media (max-width: 640px) {
+  .sidebar-nav {
+    display: none;
+  }
+}
+
+

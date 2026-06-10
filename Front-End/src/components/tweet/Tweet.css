@@ -1,0 +1,227 @@
+/* ──────────────────────────────────────────────
+   Tweet Card  –  larger & wider like video cards
+────────────────────────────────────────────── */
+@keyframes likePop {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.5); }
+  60%  { transform: scale(0.85); }
+  80%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+@keyframes tweetCardIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── Card Shell ── */
+.tweet-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 22px 28px 18px;
+  transition: background 0.2s, box-shadow 0.2s, border-color 0.2s, transform 0.16s;
+  animation: tweetCardIn 0.3s ease both;
+  position: relative;
+}
+
+.tweet-card:hover {
+  background: var(--bg-tertiary);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+  border-color: var(--accent-primary, #e53e3e);
+  transform: translateY(-2px);
+}
+
+/* ── Header ── */
+.tweet-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.tweet-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2.5px solid var(--border-color);
+  transition: border-color 0.2s;
+}
+
+.tweet-card:hover .tweet-avatar {
+  border-color: var(--accent-primary, #e53e3e);
+}
+
+.tweet-user-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.tweet-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tweet-name strong {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.tweet-username {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.tweet-time {
+  font-size: 12px;
+  color: var(--text-tertiary, #999);
+  margin: 0;
+}
+
+/* ── Owner action buttons (Edit/Delete) ── */
+.tweet-owner-actions {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.edit-btn,
+.delete-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 8px;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+
+.edit-btn:hover {
+  color: var(--accent-primary, #e53e3e);
+  border-color: var(--accent-primary, #e53e3e);
+  background: rgba(229, 62, 62, 0.07);
+}
+
+.delete-btn:hover {
+  color: #ef4444;
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.07);
+}
+
+/* ── Content ── */
+.tweet-content {
+  padding-left: 62px;
+  margin-bottom: 16px;
+}
+
+.tweet-content p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+/* ── Divider before actions ── */
+.tweet-actions {
+  display: flex;
+  gap: 6px;
+  padding-left: 62px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-color);
+}
+
+/* ── Action buttons – flat style, no permanent border ── */
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.16s, background 0.16s, border-color 0.16s;
+}
+
+.action-icon {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
+/* Like */
+.like-btn:hover {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.25);
+}
+.like-btn.liked {
+  color: #ef4444;
+}
+.like-btn.liked .heart-icon {
+  fill: #ef4444;
+}
+.like-btn.liking .heart-icon {
+  animation: likePop 0.46s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Comment */
+.comment-btn:hover {
+  color: var(--accent-primary, #e53e3e);
+  background: rgba(229, 62, 62, 0.07);
+  border-color: rgba(229, 62, 62, 0.22);
+}
+
+/* Share */
+.share-btn:hover {
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.07);
+  border-color: rgba(59, 130, 246, 0.22);
+}
+
+.count {
+  font-size: 13px;
+  min-width: 14px;
+  font-weight: 600;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .tweet-card {
+    padding: 16px 16px 14px;
+    border-radius: 14px;
+  }
+  .tweet-content {
+    padding-left: 0;
+  }
+  .tweet-actions {
+    padding-left: 0;
+    gap: 4px;
+  }
+  .action-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}
+
+
+

@@ -1,0 +1,125 @@
+.login-prompt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 10, 10, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(6px);
+}
+
+.login-prompt-modal {
+  background: var(--bg-primary, white);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  max-width: 400px;
+  width: 90%;
+  animation: slideIn 0.25s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.login-prompt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+.login-prompt-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--text-primary, #000);
+}
+
+.login-prompt-header .close-btn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: var(--text-secondary, #666);
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-prompt-header .close-btn:hover {
+  color: var(--text-primary, #000);
+}
+
+.login-prompt-body {
+  padding: 24px 20px;
+}
+
+.login-prompt-body p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary, #666);
+}
+
+.login-prompt-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  background: var(--bg-secondary);
+}
+
+.btn-cancel,
+.btn-login {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel {
+  background: transparent;
+  color: var(--text-secondary, #000);
+  border: 1px solid var(--border-color);
+}
+
+.btn-cancel:hover {
+  background: var(--bg-secondary, #e0e0e0);
+  color: var(--text-primary);
+}
+
+.btn-login {
+  background: var(--accent-primary);
+  color: white;
+}
+
+.btn-login:hover {
+  background: var(--accent-hover, #0547a8);
+}
+
+.btn-login:active {
+  transform: scale(0.98);
+}
+
+

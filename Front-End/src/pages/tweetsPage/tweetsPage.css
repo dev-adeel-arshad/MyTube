@@ -1,0 +1,140 @@
+/* ══════════════════════════════════════
+   Tweets Page
+══════════════════════════════════════ */
+@keyframes tweetsPageIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.tweets-page {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg-primary);
+  margin-left: 100px;
+}
+
+.tweets-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 36px 20px 80px;
+  animation: tweetsPageIn 0.3s ease both;
+}
+
+/* ── Hero header ── */
+.tweets-header {
+  margin-bottom: 32px;
+  text-align: center;
+  padding: 32px 24px 28px;
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.tweets-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 60% 0%, rgba(229,62,62,0.08) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.tweets-hero-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.tweets-hero-icon svg {
+  color: #1d9bf0;
+  flex-shrink: 0;
+}
+
+.tweets-header h1 {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 8px;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+.tweets-subtitle {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+
+.tweets-header-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  font-size: 13px;
+  color: var(--text-tertiary, #999);
+}
+
+.tweets-header-stats span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ── Section ── */
+.tweets-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tweets-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tweet-list-item {
+  cursor: pointer;
+}
+
+/* ── Empty state ── */
+.no-tweets {
+  text-align: center;
+  padding: 64px 24px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  color: var(--text-secondary);
+}
+
+.no-tweets p {
+  font-size: 15px;
+  margin: 0;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .tweets-page { margin-left: 80px; }
+}
+
+@media (max-width: 768px) {
+  .tweets-page { margin-left: 0; }
+  .tweets-container {
+    max-width: 100%;
+    padding: 16px 12px 60px;
+  }
+  .tweets-header h1 { font-size: 26px; }
+  .tweets-header { padding: 24px 16px 20px; }
+}
+
+

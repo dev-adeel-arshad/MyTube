@@ -1,0 +1,330 @@
+﻿/* 
+   LibraryPage  YouTube-style library
+   Light + dark theme via CSS vars
+ */
+
+.library-page {
+  background: var(--bg-primary);
+  min-height: 100vh;
+  margin-left: 100px;
+  padding: 28px 24px 60px;
+}
+
+/*  Header  */
+.library-header { margin-bottom: 28px; }
+.library-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/*  Section  */
+.library-section { margin-bottom: 40px; }
+
+.library-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.library-section-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.library-section-header h3::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 18px;
+  background: #ff0000;
+  border-radius: 2px;
+}
+
+.view-all-btn {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 6px 16px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.view-all-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+  border-color: var(--text-secondary);
+}
+
+/*  Grid  */
+.library-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/*  Card  */
+.library-card {
+  background: var(--bg-primary);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.22s ease;
+}
+
+.library-card:hover {
+  transform: translateY(-3px);
+}
+
+.library-card-thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--bg-tertiary);
+  border-radius: 10px;
+}
+
+.library-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: var(--bg-tertiary);
+  transition: transform 0.3s ease;
+  border-radius: 10px;
+}
+
+/* Fallback for cards without .library-card-thumb wrapper (old markup) */
+.library-card > img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+  background: var(--bg-tertiary);
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.library-card:hover img {
+  transform: scale(1.04);
+}
+
+.library-card-info {
+  padding: 8px 2px 4px;
+}
+
+.library-card-info h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.library-card-info p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/*  Helper classes  */
+.empty-msg {
+  color: var(--text-secondary);
+  font-size: 14px;
+  padding: 24px 0;
+}
+
+.library-content { padding: 24px 0; }
+
+.no-data {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 16px;
+  padding: 40px;
+}
+
+/*  Responsive  */
+@media (max-width: 900px) {
+  .library-page { margin-left: 80px; }
+  .library-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+}
+
+@media (max-width: 600px) {
+  .library-page { margin-left: 0; padding: 16px 12px 60px; }
+  .library-header h1 { font-size: 22px; }
+  .library-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+}
+
+/* ══════════════════════════════════════════════
+   Shared YouTube-style Video Cards (vc-card)
+   Used by LikedVideosPage & WatchLaterPage
+══════════════════════════════════════════════ */
+
+.liked-page-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.liked-page-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.liked-count {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.liked-videos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  padding-bottom: 40px;
+}
+
+.liked-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--text-secondary);
+  font-size: 15px;
+}
+
+/* ── Card ── */
+.vc-card {
+  background: var(--bg-primary);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  position: relative;
+  outline: none;
+}
+
+.vc-card:hover,
+.vc-card:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.13);
+}
+
+/* Thumbnail */
+.vc-thumb-wrap {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--bg-tertiary);
+  border-radius: 10px;
+}
+
+.vc-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.vc-card:hover .vc-thumb {
+  transform: scale(1.04);
+}
+
+/* Three-dot menu overlay */
+.vc-menu {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.vc-card:hover .vc-menu {
+  opacity: 1;
+}
+
+/* Info row below thumbnail */
+.vc-info {
+  display: flex;
+  gap: 10px;
+  padding: 10px 4px 6px;
+}
+
+/* Avatar circle */
+.vc-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.vc-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vc-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.vc-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 3px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.vc-channel {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0 0 2px;
+}
+
+.vc-date {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .liked-videos-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+}
+
+@media (max-width: 600px) {
+  .liked-page-header h1 { font-size: 22px; }
+  .liked-videos-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .vc-title { font-size: 13px; }
+  .vc-avatar { width: 28px; height: 28px; font-size: 12px; }
+}
