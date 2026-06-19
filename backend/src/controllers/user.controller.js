@@ -11,19 +11,20 @@ import { sendEmail, buildOtpEmail } from "../utils/email.js";
 
 const generateRefreshAndAccessTokens = async (userId) => {
     try {
-
+        console.log("Generating tokens for userId:", userId);
         const user = await User.findById(userId);
 
         const AccessToken = user.generateAccessToken()
         const RefreshToken = user.generateRefreshToken()
 
-
         user.refreshToken = RefreshToken;
         await user.save({ validateBeforeSave: false })
 
+        console.log("Generated tokens for userId:", userId);
         return { AccessToken, RefreshToken }
 
     } catch (error) {
+        console.error("Token generation failed for userId:", userId, error?.message || error);
         throw new ApiError(500, "Something went wrong while creating the Access and refresh token!!")
     }
 
@@ -36,12 +37,19 @@ const generateRefreshAndAccessTokens = async (userId) => {
 const registerUser = asyncHandler(async (req, res) => {
 
     const { fullname, email, password, username } = req.body;
-   
 
+    console.log("Register request received", {
+      username,
+      email,
+      fullname,
+      hasAvatar: Boolean(req.files?.avatar?.length),
+      hasCoverImage: Boolean(req.files?.coverImage?.length),
+    });
 
     if (
         [username, fullname, email, password].some((fields) => fields?.trim() === "")
     ) {
+        console.log("Register validation failed: missing field", { username, email, fullname });
         throw new ApiError(400, " All fields re required!!")
     }
 
@@ -52,6 +60,11 @@ const registerUser = asyncHandler(async (req, res) => {
     const existedUser = await User.findOne({
         $or: [{ username }, { email }]
     })
+    console.log("Register duplicate check result", {
+      exists: Boolean(existedUser),
+      usernameMatch: existedUser?.username === username,
+      emailMatch: existedUser?.email === email,
+    });
     if (existedUser) {
         throw new ApiError(409, "User with username or email Already Exists!!")
 
@@ -80,6 +93,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const verificationCode = String(Math.floor(100000 + Math.random() * 900000));
     const verificationExpires = new Date(Date.now() + 2 * 60 * 1000);
 
+    console.log("Creating user record for", { username: username?.toLowerCase(), email });
     const user = await User.create({
         fullname,
         avatar: avatarUrl,
@@ -93,12 +107,14 @@ const registerUser = asyncHandler(async (req, res) => {
     })
 
     const createdUser = await User.findById(user._id).select("-password -refreshToken")
+    console.log("Created user", { id: createdUser?._id?.toString(), email: createdUser?.email });
 
     if (!createdUser) {
         throw new ApiError(500, " Something went wrong while creating the User plz Try again later!!");
     }
 
     try {
+        console.log("Sending verification email to", user.email);
         await sendEmail({
             to: user.email,
             ...buildOtpEmail({
@@ -108,7 +124,9 @@ const registerUser = asyncHandler(async (req, res) => {
                 footer: "This code expires in 2 minutes.",
             })
         });
+        console.log("Verification email sent to", user.email);
     } catch (error) {
+        console.error("Email send failed", error?.message || error);
         await User.findByIdAndDelete(user._id);
         throw new ApiError(500, error?.message || "Email service not configured")
     }
@@ -125,8 +143,14 @@ const loginUser = asyncHandler(async (req, res) => {
 
 
     const { email, username, password } = req.body
+    console.log("Login request received", {
+      username,
+      email,
+      hasPassword: Boolean(password),
+    });
 
     if (!(username || email) || !password) {
+        console.log("Login validation failed: missing credentials", { username, email });
         throw new ApiError(400, "Username or email and password are required!!")
     }
 
@@ -135,17 +159,19 @@ const loginUser = asyncHandler(async (req, res) => {
     const user = await User.findOne({
         $or: [{ username }, { email }]
     })
-
+    console.log("Login user lookup result", { found: Boolean(user), userId: user?._id?.toString() });
 
     if (!user) {
         throw new ApiError(404, "User does not exist!!")
     }
 
     if (!user.isEmailVerified) {
+        console.log("Login blocked: email not verified", { userId: user._id.toString() });
         throw new ApiError(403, "Email not verified")
     }
 
     const isPasswordValid = await user.isPasswordcorrect(password);
+    console.log("Password validation result", { userId: user._id.toString(), isPasswordValid });
 
     if (!isPasswordValid) {
         throw new ApiError(404, "Passowrd is not valid!")
@@ -154,6 +180,7 @@ const loginUser = asyncHandler(async (req, res) => {
     const { RefreshToken, AccessToken } = await generateRefreshAndAccessTokens(user._id)
 
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
+    console.log("Login successful", { userId: user._id.toString(), refreshTokenSaved: Boolean(RefreshToken) });
 
     const cookieOptions = {
       httpOnly: true,

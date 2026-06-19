@@ -37,9 +37,10 @@ function SignupPage() {
       data.append("avatar", avatar);
       if (coverImage) data.append("coverImage", coverImage);
 
-      const response = await axiosInstance.post(`/v1/users/register`, data, {
-        withCredentials: true,
-      });
+      const response = await axiosInstance.post(`/v1/users/register`,
+        data,
+        { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true }
+      );
 
       if (response.data?.data?.user) {
         setPendingEmail(formData.email);
