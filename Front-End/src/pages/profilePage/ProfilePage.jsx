@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "@/api/axiosInstance";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { toggleSubscribedChannel } from "../../features/authSlice.js";
@@ -16,7 +16,7 @@ import { useToast } from "../../components/Toast/Toast.jsx";
 // Helper: fetch all videos for a user
 async function fetchUserVideos(userId) {
     try {
-        const res = await axios.get(`/api/v1/videos?owner=${userId}`);
+        const res = await axiosInstance.get(`/v1/videos?owner=${userId}`);
         return res.data?.videos || [];
     } catch {
         return [];
@@ -82,7 +82,7 @@ export default function ProfilePage() {
             const targetUsername = username || currentUser?.username;
             if (targetUsername) {
                 try {
-                    const res = await axios.get(`/api/v1/users/c/${targetUsername}`, {
+                    const res = await axiosInstance.get(`/v1/users/c/${targetUsername}`, {
                         withCredentials: true,
                     });
                     // API response format may vary
@@ -102,7 +102,7 @@ export default function ProfilePage() {
     useEffect(() => {
         const fetchHistory = async () => {
             try {
-                const res = await axios.get(`/api/v1/users/history`, { withCredentials: true });
+                const res = await axiosInstance.get(`/v1/users/history`);
                 setWatchHistory(normalizeHistoryItems(res.data?.data));
             } catch (err) {
                 console.log("Error fetching watch history:", err);
@@ -111,7 +111,7 @@ export default function ProfilePage() {
 
         const fetchLikedVideos = async () => {
             try {
-                const res = await axios.get(`/api/v1/like/videos`, { withCredentials: true });
+                const res = await axiosInstance.get(`/v1/like/videos`);
                 const items = Array.isArray(res.data?.data)
                     ? res.data.data.map((item) => item.video || item)
                     : [];
@@ -125,9 +125,7 @@ export default function ProfilePage() {
             try {
                 const userId = channel?._id;
                 if (!userId) return;
-                const res = await axios.get(`/api/v1/tweets/user/${userId}`, { 
-                    withCredentials: true 
-                });
+                const res = await axiosInstance.get(`/v1/tweets/user/${userId}`);
                 setUserTweets(res.data?.tweets || res.data?.data || []);
             } catch (err) {
                 setUserTweets([]);
@@ -139,7 +137,7 @@ export default function ProfilePage() {
                 const userId = channel?._id;
                 if (!userId) return;
                 // Try backend API for user videos
-                const res = await axios.get(`/api/v1/videos?owner=${userId}`);
+                const res = await axiosInstance.get(`/v1/videos?owner=${userId}`);
                 setUserVideos(res.data?.videos || []);
             } catch (err) {
                 setUserVideos([]);
@@ -154,7 +152,7 @@ export default function ProfilePage() {
                 const url = isOwn
                     ? "/api/v1/playlists"
                     : `/api/v1/playlists/user/${userId}`;
-                const res = await axios.get(url, { withCredentials: true });
+                const res = await axiosInstance.get(url);
                 setUserPlaylists(res.data?.data || res.data?.playlists || []);
             } catch (err) {
                 setUserPlaylists([]);
@@ -221,7 +219,7 @@ export default function ProfilePage() {
         if (!channel) return;
         try {
             const channelId = channel._id || channel.id;
-            const res = await axios.post(`/api/v1/channel/c/${channelId}`, {}, { withCredentials: true });
+            const res = await axiosInstance.post(`/v1/channel/c/${channelId}`, {});
             setSubscribed(!!res?.data?.subscribed);
             // update redux subscribed list
             // dispatch via action string to avoid import changes here
@@ -597,4 +595,7 @@ export default function ProfilePage() {
         </div>
     );
 }
+
+
+
 

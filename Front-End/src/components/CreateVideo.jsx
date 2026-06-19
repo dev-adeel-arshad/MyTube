@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import axios from "axios";
+import axiosInstance from "@/api/axiosInstance";
 import "./CreateVideo.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -75,8 +75,7 @@ export default function CreateVideo() {
             data.append("videoFile", formData.videoFile);
             data.append("thumbnail", formData.thumbnail);
 
-            await axios.post("/api/v1/videos/", data, {
-                withCredentials: true,
+            await axiosInstance.post(`/v1/videos/`, data, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
@@ -308,3 +307,6 @@ export default function CreateVideo() {
         </div>
     );
 }
+
+
+

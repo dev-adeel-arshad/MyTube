@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import axios from "axios";
+import axiosInstance from "@/api/axiosInstance";
 import { hideVideo } from "../features/videosSlice.js";
 
 export default function useVideoMenuActions(navigate, loginPromptState) {
@@ -30,7 +30,7 @@ export default function useVideoMenuActions(navigate, loginPromptState) {
     }
 
     try {
-      await axios.post(`/api/v1/watch-later/${video._id}`, {}, { withCredentials: true });
+      await axiosInstance.post(`/v1/watch-later/${video._id}`, {});
     } catch (error) {
       console.error("Failed to add to watch later", error);
     }
@@ -60,3 +60,6 @@ export default function useVideoMenuActions(navigate, loginPromptState) {
     handleNotInterested,
   };
 }
+
+
+

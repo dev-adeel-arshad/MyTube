@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
+import axiosInstance from "@/api/axiosInstance";
 import "./HomePage.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -27,10 +27,7 @@ function HomePage() {
       try {
         setLoading(true);
 
-        const res = await axios.get(
-          `/api/v1/videos?page=${page}&limit=${limit}`,
-          { withCredentials: true }
-        );
+        const res = await axiosInstance.get(`/v1/videos?page=${page}&limit=${limit}`);
 
         setVideos(res.data.videos);
       } catch (error) {
@@ -194,5 +191,8 @@ function HomePage() {
 }
 
 export default HomePage;
+
+
+
 
 

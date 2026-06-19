@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import axiosInstance from "@/api/axiosInstance";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login, logOut } from "../../features/authSlice.js";
@@ -27,11 +27,8 @@ function LoginPage() {
       const payloadBody = username.includes("@")
         ? { email: username, password }
         : { username, password };
-      const response = await axios.post(
-        "/api/v1/users/login",
-        payloadBody,
-        { withCredentials: true }
-      );
+      const response = await axiosInstance.post(`/v1/users/login`,
+        payloadBody);
 
       // server returns ApiResponse: { statusCode, data: { user, AccessToken, RefreshToken }, message }
       const payload = response.data?.data || response.data;
@@ -65,11 +62,8 @@ function LoginPage() {
       return;
     }
     try {
-      await axios.post(
-        "/api/v1/users/verify-email",
-        { email, code: verifyCode },
-        { withCredentials: true }
-      );
+      await axiosInstance.post(`/v1/users/verify-email`,
+        { email, code: verifyCode });
       showToast("Email verified. Please log in.", "success");
       setStep("login");
       setVerifyCode("");
@@ -84,11 +78,8 @@ function LoginPage() {
       return;
     }
     try {
-      await axios.post(
-        "/api/v1/users/resend-verification",
-        { email },
-        { withCredentials: true }
-      );
+      await axiosInstance.post(`/v1/users/resend-verification`,
+        { email });
       showToast("Verification code resent.", "info");
     } catch (error) {
       showToast(error.response?.data?.message || "Failed to resend code", "error");
@@ -205,4 +196,7 @@ function LoginPage() {
 }
 
 export default LoginPage;
+
+
+
 

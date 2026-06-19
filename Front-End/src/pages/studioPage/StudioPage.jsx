@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "@/api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import PlaylistCreationModal from "../../components/PlaylistCreationModal.jsx";
@@ -46,12 +46,12 @@ export default function StudioPage() {
     if (!currentUser?._id) return;
     try {
       if (activeTab === "videos") {
-        const res = await axios.get(`/api/v1/videos?owner=${currentUser._id}`, {
+        const res = await axiosInstance.get(`/v1/videos?owner=${currentUser._id}`, {
           withCredentials: true,
         });
         setVideos(res.data?.videos || []);
       } else if (activeTab === "playlists") {
-        const res = await axios.get("/api/v1/playlist/user", {
+        const res = await axiosInstance.get(`/v1/playlist/user`, {
           withCredentials: true,
         });
         setPlaylists(res.data?.data || res.data?.playlists || []);
@@ -78,7 +78,7 @@ export default function StudioPage() {
   const handleDeleteVideo = async (videoId) => {
     if (!window.confirm("Delete this video?")) return;
     try {
-      await axios.delete(`/api/v1/videos/${videoId}`, {
+      await axiosInstance.delete(`/v1/videos/${videoId}`, {
         withCredentials: true,
       });
       showToast("Video deleted!", "success");
@@ -265,4 +265,7 @@ export default function StudioPage() {
     </div>
   );
 }
+
+
+
 

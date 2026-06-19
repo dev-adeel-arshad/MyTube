@@ -5,10 +5,9 @@ import { app } from "./app.js";
 dotenv.config();
 
 const PORT = process.env.PORT || 8000;
-const baseDbUrl = process.env.DB_URL
-  ? process.env.DB_URL.replace(/\/$/, "")
-  : null;
-const dbName = process.env.DB_NAME || null;
+const dbUrl = process.env.DB_URL || process.env.DATABASE_URL || null;
+const baseDbUrl = dbUrl ? dbUrl.replace(/\/$/, "") : null;
+const dbName = process.env.DB_NAME || process.env.MONGODB_DATABASE || null;
 const MONGODB_URI =
   process.env.MONGODB_URI ||
   (baseDbUrl && dbName ? `${baseDbUrl}/${dbName}` : null) ||

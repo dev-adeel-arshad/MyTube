@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "@/api/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setUserTweets } from "../../features/tweetsSlice";
@@ -20,10 +20,7 @@ export default function TweetsPage() {
 
       try {
         setLoading(true);
-        const res = await axios.get(
-          `/api/v1/tweets/user/${currentUser._id}`,
-          { withCredentials: true }
-        );
+        const res = await axiosInstance.get(`/v1/tweets/user/${currentUser._id}`);
 
         if (res.data?.tweets) {
           dispatch(setUserTweets(res.data.tweets));
@@ -104,4 +101,7 @@ export default function TweetsPage() {
     </div>
   );
 }
+
+
+
 

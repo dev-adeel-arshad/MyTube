@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "@/api/axiosInstance";
 import "./PlaylistMultiStepModal.css";
 import { VIDEO_CATEGORIES } from "../utils/videoCategories.js";
 import { useToast } from "./Toast/Toast.jsx";
@@ -50,9 +50,7 @@ export default function PlaylistMultiStepModal({
   const fetchAvailableVideos = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`/api/v1/videos?owner=${currentUserId}`, {
-        withCredentials: true,
-      });
+      const res = await axiosInstance.get(`/v1/videos?owner=${currentUserId}`);
       setAvailableVideos(res.data?.videos || []);
     } catch (err) {
       console.error("Error fetching videos:", err);
@@ -159,11 +157,8 @@ export default function PlaylistMultiStepModal({
       setUploadProgress(5);
 
       const safeDescription = playlistDesc.trim() || "No description";
-      const createRes = await axios.post(
-        "/api/v1/playlist/",
-        { name: playlistName, description: safeDescription },
-        { withCredentials: true }
-      );
+      const createRes = await axiosInstance.post(`/v1/playlist/`,
+        { name: playlistName, description: safeDescription });
 
       const createdPlaylist = createRes.data?.playlist || createRes.data?.data || createRes.data;
       const playlistId = createdPlaylist._id;
@@ -182,9 +177,7 @@ export default function PlaylistMultiStepModal({
             videoFormData.append("videoFile", video.file);
             videoFormData.append("thumbnail", video.thumbnail);
 
-            const uploadRes = await axios.post("/api/v1/videos/", videoFormData, {
-              withCredentials: true,
-            });
+            const uploadRes = await axiosInstance.post(`/v1/videos/`, videoFormData);
             videoId = uploadRes.data?.video?._id || uploadRes.data?.data?._id || uploadRes.data?._id;
           } catch (err) {
             console.error("Error uploading video:", err);
@@ -195,7 +188,7 @@ export default function PlaylistMultiStepModal({
 
         if (videoId) {
           try {
-            await axios.patch(`/api/v1/playlist/add/${videoId}/${playlistId}`, {}, { withCredentials: true });
+            await axiosInstance.patch(`/v1/playlist/add/${videoId}/${playlistId}`, {});
           } catch (err) {
             console.warn("Failed to add video to playlist:", err);
           }
@@ -640,4 +633,7 @@ export default function PlaylistMultiStepModal({
     </div>
   );
 }
+
+
+
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios"
+import axiosInstance from "@/api/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { addTweet } from "../../features/tweetsSlice";
 import LoginPrompt from "../LoginPrompt";
@@ -32,11 +32,8 @@ function CreateTweet() {
 
     try {
       setLoading(true);
-      const response = await axios.post(
-        "/api/v1/tweets/create-tweet",
-        { content },
-        { withCredentials: true }
-      );
+      const response = await axiosInstance.post(`/v1/tweets/create-tweet`,
+        { content });
 
       if (response.status === 200 && response.data?.tweet) {
         dispatch(addTweet(response.data.tweet));
@@ -103,4 +100,7 @@ function CreateTweet() {
 }
 
 export default CreateTweet;
+
+
+
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "@/api/axiosInstance";
 import PlaylistMultiStepModal from "./PlaylistMultiStepModal";
 import "./PlaylistSelectionModal.css";
 
@@ -15,9 +15,7 @@ export default function PlaylistSelectionModal({ isOpen, onClose, videoId, onAdd
     (async () => {
       try {
         setLoading(true);
-        const response = await axios.get("/api/v1/playlist/user", {
-          withCredentials: true,
-        });
+        const response = await axiosInstance.get(`/v1/playlist/user`);
         setPlaylists(response.data?.data || []);
       } catch (error) {
         console.error("Failed fetching playlists", error);
@@ -29,11 +27,8 @@ export default function PlaylistSelectionModal({ isOpen, onClose, videoId, onAdd
 
   const addToPlaylist = async (playlistId) => {
     try {
-      await axios.patch(
-        `/api/v1/playlist/add/${videoId}/${playlistId}`,
-        {},
-        { withCredentials: true }
-      );
+      await axiosInstance.patch(`/v1/playlist/add/${videoId}/${playlistId}`,
+        {});
       onAdded?.();
       onClose?.();
     } catch (error) {
@@ -51,22 +46,16 @@ export default function PlaylistSelectionModal({ isOpen, onClose, videoId, onAdd
 
     try {
       setSubmitting(true);
-      const createRes = await axios.post(
-        "/api/v1/playlist/",
-        { name: trimmedName, description: "No description" },
-        { withCredentials: true }
-      );
+      const createRes = await axiosInstance.post(`/v1/playlist/`,
+        { name: trimmedName, description: "No description" });
 
       const createdPlaylist =
         createRes.data?.playlist || createRes.data?.data || createRes.data;
       const playlistId = createdPlaylist?._id;
 
       if (playlistId && videoId) {
-        await axios.patch(
-          `/api/v1/playlist/add/${videoId}/${playlistId}`,
-          {},
-          { withCredentials: true }
-        );
+        await axiosInstance.patch(`/v1/playlist/add/${videoId}/${playlistId}`,
+          {});
       }
 
       setNewPlaylistName("");
@@ -159,4 +148,7 @@ export default function PlaylistSelectionModal({ isOpen, onClose, videoId, onAdd
     </div>
   );
 }
+
+
+
 

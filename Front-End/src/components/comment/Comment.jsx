@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import axios from "axios";
+import axiosInstance from "@/api/axiosInstance";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LoginPrompt from "../LoginPrompt";
@@ -27,11 +27,8 @@ export default function Comment({ videoId: propVideoId, refType = "video", onCom
     setError(null);
 
     try {
-      const result = await axios.post(
-        `/api/v1/comments/${videoId}`,
-        { content, refType },
-        { withCredentials: true }
-      );
+      const result = await axiosInstance.post(`/v1/comments/${videoId}`,
+        { content, refType });
 
       setContent("");
       if (onCommentAdded) onCommentAdded();
@@ -74,4 +71,7 @@ export default function Comment({ videoId: propVideoId, refType = "video", onCom
     </div>
   )
 } 
+
+
+
 

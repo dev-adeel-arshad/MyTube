@@ -25,7 +25,7 @@
 /*  Hero  */
 .about-hero {
   position: relative;
-  background: linear-gradient(135deg, #e53e3e 0%, #c53030 55%, #9b2c2c 100%);
+  background: linear-gradient(135deg, #c74a4a 0%, #9f3d3d 55%, #7a2f2f 100%);
   padding: 80px 48px;
   text-align: center;
   overflow: hidden;
@@ -36,7 +36,7 @@
   position: absolute;
   top: -60px; right: -60px;
   width: 320px; height: 320px;
-  background: rgba(255,255,255,0.07);
+  background: rgba(255, 255, 255, 0.10);
   border-radius: 50%;
   animation: heroGlow 4s ease-in-out infinite;
 }

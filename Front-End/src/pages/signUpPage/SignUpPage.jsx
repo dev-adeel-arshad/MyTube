@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "@/api/axiosInstance";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../../components/Toast/Toast.jsx";
@@ -19,10 +19,13 @@ function SignupPage() {
 
   const [avatar, setAvatar] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
+    setIsSubmitting(true);
 
     try {
       const data = new FormData();
@@ -34,11 +37,9 @@ function SignupPage() {
       data.append("avatar", avatar);
       if (coverImage) data.append("coverImage", coverImage);
 
-      const response = await axios.post(
-        "/api/v1/users/register",
-        data,
-        { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true }
-      );
+      const response = await axiosInstance.post(`/v1/users/register`, data, {
+        withCredentials: true,
+      });
 
       if (response.data?.data?.user) {
         setPendingEmail(formData.email);
@@ -47,18 +48,28 @@ function SignupPage() {
       }
 
     } catch (error) {
-      showToast(error.response?.data?.message || "Registration failed", "error");
+      let message = error.response?.data?.message || "Registration failed. Please try again.";
+      const lowerMessage = String(message).toLowerCase();
+      if (
+        lowerMessage.includes("already exists") ||
+        lowerMessage.includes("duplicate") ||
+        lowerMessage.includes("taken") ||
+        lowerMessage.includes("username") ||
+        lowerMessage.includes("email")
+      ) {
+        message = "That username or email is already in use. Please choose another one.";
+      }
+      showToast(message, "error");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleVerify = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        "/api/v1/users/verify-email",
-        { email: pendingEmail, code: verificationCode },
-        { withCredentials: true }
-      );
+      await axiosInstance.post(`/v1/users/verify-email`,
+        { email: pendingEmail, code: verificationCode });
       showToast("Email verified! You can now log in.", "success");
       setTimeout(() => navigate("/login"), 150);
     } catch (error) {
@@ -68,11 +79,8 @@ function SignupPage() {
 
   const handleResend = async () => {
     try {
-      await axios.post(
-        "/api/v1/users/resend-verification",
-        { email: pendingEmail },
-        { withCredentials: true }
-      );
+      await axiosInstance.post(`/v1/users/resend-verification`,
+        { email: pendingEmail });
       showToast("Verification code resent.", "info");
     } catch (error) {
       showToast(error.response?.data?.message || "Failed to resend code", "error");
@@ -160,7 +168,9 @@ function SignupPage() {
             </div>
           </div>
 
-          <button type="submit" className="signup-btn primary">Create Account</button>
+          <button type="submit" className="signup-btn primary" disabled={isSubmitting}>
+            {isSubmitting ? "Registering..." : "Create Account"}
+          </button>
         </form>
       )}
 
@@ -205,4 +215,7 @@ function SignupPage() {
 }
 
 export default SignupPage;
+
+
+
 

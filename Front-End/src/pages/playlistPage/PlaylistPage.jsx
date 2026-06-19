@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "@/api/axiosInstance";
 import "./playlistPage.css";
 import { useSelector } from "react-redux";
 import AddVideosToExistingPlaylistModal from "../../components/AddVideosToExistingPlaylistModal.jsx";
@@ -25,7 +25,7 @@ export default function PlaylistPage() {
   useEffect(() => {
     const fetchPlaylist = async () => {
       try {
-        const res = await axios.get(`/api/v1/playlist/${id}`, {
+        const res = await axiosInstance.get(`/v1/playlist/${id}`, {
           withCredentials: true,
         });
         const data = res.data?.data || res.data?.playlist || res.data;
@@ -42,7 +42,7 @@ export default function PlaylistPage() {
 
   const refreshPlaylist = async () => {
     try {
-      const res = await axios.get(`/api/v1/playlist/${id}`, {
+      const res = await axiosInstance.get(`/v1/playlist/${id}`, {
         withCredentials: true,
       });
       const data = res.data?.data || res.data?.playlist || res.data;
@@ -131,3 +131,6 @@ export default function PlaylistPage() {
     </div>
   );
 }
+
+
+

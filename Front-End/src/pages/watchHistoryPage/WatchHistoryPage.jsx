@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "@/api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "../libraryPage/LibraryPage.css";
@@ -38,7 +38,7 @@ export default function WatchHistoryPage() {
   const fetchWatchHistory = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("/api/v1/users/history", { withCredentials: true });
+      const res = await axiosInstance.get(`/v1/users/history`);
       const grouped = res.data?.data?.grouped || res.data?.data || {
         today: [],
         yesterday: [],
@@ -58,7 +58,7 @@ export default function WatchHistoryPage() {
 
   const fetchTweetHistory = async () => {
     try {
-      const res = await axios.get("/api/v1/users/history/tweets", { withCredentials: true });
+      const res = await axiosInstance.get(`/v1/users/history/tweets`);
       const items = res.data?.data?.items || [];
       setTweetHistory(Array.isArray(items) ? items : []);
     } catch (err) {
@@ -69,7 +69,7 @@ export default function WatchHistoryPage() {
   const fetchUserComments = async () => {
     setCommentsLoading(true);
     try {
-      const res = await axios.get("/api/v1/comments/user/me", { withCredentials: true });
+      const res = await axiosInstance.get(`/v1/comments/user/me`);
       const items = res.data?.data?.comments || [];
       setUserComments(Array.isArray(items) ? items : []);
     } catch (err) {
@@ -83,11 +83,8 @@ export default function WatchHistoryPage() {
     const next = !historyPaused;
     setHistoryPaused(next);
     try {
-      const res = await axios.patch(
-        "/api/v1/users/history/pause",
-        { paused: next },
-        { withCredentials: true }
-      );
+      const res = await axiosInstance.patch(`/v1/users/history/pause`,
+        { paused: next });
       setHistoryPaused(!!res.data?.data?.paused);
     } catch (err) {
       setHistoryPaused(!next);
@@ -97,7 +94,7 @@ export default function WatchHistoryPage() {
 
   const clearHistory = async () => {
     try {
-      await axios.delete("/api/v1/users/history", { withCredentials: true });
+      await axiosInstance.delete(`/v1/users/history`);
       setHistoryGroups({ today: [], yesterday: [], older: [] });
       setTweetHistory([]);
     } catch (err) {
@@ -107,7 +104,7 @@ export default function WatchHistoryPage() {
 
   const removeFromHistory = async (videoId) => {
     try {
-      await axios.delete(`/api/v1/users/history/${videoId}`, { withCredentials: true });
+      await axiosInstance.delete(`/v1/users/history/${videoId}`);
       await fetchWatchHistory();
     } catch (err) {
       console.error("Failed to remove from history:", err);
@@ -423,3 +420,6 @@ export default function WatchHistoryPage() {
     </div>
   );
 }
+
+
+

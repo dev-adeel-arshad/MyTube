@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "@/api/axiosInstance";
 import "./AllPlaylistsPage.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -25,8 +25,8 @@ export default function AllPlaylistsPage() {
     try {
       setLoading(true);
 
-      const res = await axios
-        .get("/api/v1/playlist/user", { withCredentials: true })
+      const res = await axiosInstance
+        .get("/v1/playlist/user")
         .catch((err) => {
           console.error("Playlists fetch error:", err);
           return { data: { data: [] } };
@@ -93,3 +93,6 @@ export default function AllPlaylistsPage() {
     </div>
   );
 }
+
+
+

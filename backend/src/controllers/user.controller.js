@@ -155,18 +155,16 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
 
-    const option = {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    }
-console.log('cookies are',AccessToken);
-console.log('cookies are',RefreshToken);
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    };
 
     return res
-        .status(200)
-        .cookie("AccessToken", AccessToken, option)
-        .cookie("RefreshToken", RefreshToken, option)
+      .status(200)
+      .cookie("AccessToken", AccessToken, cookieOptions)
+      .cookie("RefreshToken", RefreshToken, cookieOptions)
         .json(
             new ApiResponse(
                 200,
@@ -322,18 +320,18 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
         }
 
 
-        const option = {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-        }
+        const cookieOptions = {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        };
 
-        const { AccessToken, RefreshToken } = await generateRefreshAndAccessTokens(user._id)
+        const { AccessToken, RefreshToken } = await generateRefreshAndAccessTokens(user._id);
 
         return res
-            .status(200)
-            .cookie("AccessToken", AccessToken, option)
-            .cookie("RefreshToken", RefreshToken, option)
+          .status(200)
+          .cookie("AccessToken", AccessToken, cookieOptions)
+          .cookie("RefreshToken", RefreshToken, cookieOptions)
             .json(
                 new ApiResponse(200, { AccessToken, RefreshToken }, "Access token refreshed!!")
             )
