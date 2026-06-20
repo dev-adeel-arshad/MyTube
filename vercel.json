@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd Front-End && npm run build",
+  "outputDirectory": "Front-End/dist",
+  "framework": "vite"
+}
