@@ -54,8 +54,6 @@ const getComments = asyncHandler(async (req, res) => {
 
 
 
-
-
 // ADD COMMENT (for video or tweet)
 const addComment = asyncHandler(async (req, res) => {
   const { content, refType = "video" } = req.body;

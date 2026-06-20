@@ -36,6 +36,7 @@ const generateRefreshAndAccessTokens = async (userId) => {
 const registerUser = asyncHandler(async (req, res) => {
 
     const { fullname, email, password, username } = req.body;
+    console.log(`[auth] registerUser called - email=${email} ip=${req.ip} host=${req.get("host")}`);
    
 
 
@@ -126,6 +127,8 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const { email, username, password } = req.body
 
+    console.log(`[auth] loginUser attempt - identifier=${username||email} ip=${req.ip} host=${req.get("host")}`);
+
     if (!(username || email) || !password) {
         throw new ApiError(400, "Username or email and password are required!!")
     }
@@ -154,6 +157,8 @@ const loginUser = asyncHandler(async (req, res) => {
     const { RefreshToken, AccessToken } = await generateRefreshAndAccessTokens(user._id)
 
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
+
+    console.log(`[auth] loginUser success - userId=${user._id}`);
 
     const option = {
         httpOnly: true,

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 import { useNavigate } from "react-router-dom";
 import "../libraryPage/LibraryPage.css";
 import "./LikedVideosPage.css";
@@ -21,9 +21,7 @@ export default function LikedVideosPage() {
   const fetchLikedVideos = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("/api/v1/like/videos", {
-        withCredentials: true,
-      });
+      const res = await axiosInstance.get("/like/videos");
       let likedData = [];
       if (Array.isArray(res.data?.data)) {
         likedData = res.data.data.map((item) => item.video || item);

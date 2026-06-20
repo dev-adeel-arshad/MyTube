@@ -1,6 +1,6 @@
 .all-playlists-page {
   padding: 40px;
-  margin-left: 100px;
+  margin-left: 0;
   background: linear-gradient(135deg, var(--background) 0%, rgba(0,0,0,0.02) 100%);
   color: var(--text-primary);
   min-height: 100vh;
@@ -282,13 +282,6 @@
 
   .empty-state {
     padding: 40px 20px;
-  }
-}  .playlist-info {
-    padding: 10px;
-  }
-
-  .playlist-info h3 {
-    font-size: 0.95rem;
   }
 }
 

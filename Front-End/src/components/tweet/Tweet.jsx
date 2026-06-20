@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { deleteTweet, toggleLikedTweet } from "../../features/tweetsSlice";
@@ -26,8 +26,8 @@ export default function Tweet({ tweet, onDelete, onUpdate }) {
     const fetchCounts = async () => {
       try {
         const [likesRes, commentsRes] = await Promise.all([
-          axios.get(`/api/v1/like/t/${tweet._id}`, { withCredentials: true }),
-          axios.get(`/api/v1/comments/${tweet._id}?refType=tweet`, { withCredentials: true }),
+          axiosInstance.get(`/like/t/${tweet._id}`),
+          axiosInstance.get(`/comments/${tweet._id}?refType=tweet`),
         ]);
         const likes = likesRes.data?.data || [];
         setLikeCount(likes.length || 0);
@@ -52,10 +52,9 @@ export default function Tweet({ tweet, onDelete, onUpdate }) {
     setLiking(true);
     setTimeout(() => setLiking(false), 500);
     try {
-      const res = await axios.post(
-        `/api/v1/like/toggle/t/${tweet._id}`,
-        {},
-        { withCredentials: true }
+      const res = await axiosInstance.post(
+        `/like/toggle/t/${tweet._id}`,
+        {}
       );
 
       if (res.data?.data?.liked) {
@@ -93,9 +92,8 @@ export default function Tweet({ tweet, onDelete, onUpdate }) {
     if (!window.confirm("Are you sure you want to delete this tweet?")) return;
 
     try {
-      await axios.delete(
-        `/api/v1/tweets/update-tweet/${tweet._id}`,
-        { withCredentials: true }
+      await axiosInstance.delete(
+        `/tweets/update-tweet/${tweet._id}`
       );
       dispatch(deleteTweet(tweet._id));
       if (onDelete) onDelete(tweet._id);
@@ -110,10 +108,9 @@ export default function Tweet({ tweet, onDelete, onUpdate }) {
     if (updated === null) return;
 
     try {
-      const res = await axios.patch(
-        `/api/v1/tweets/update-tweet/${tweet._id}`,
-        { content: updated },
-        { withCredentials: true }
+      const res = await axiosInstance.patch(
+        `/tweets/update-tweet/${tweet._id}`,
+        { content: updated }
       );
       if (res.status === 200) {
         if (onUpdate) onUpdate(tweet._id, updated);

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
+import axiosInstance from "./api/axiosInstance.js";
 
 import { login, logOut, setSubscribedChannels } from "./features/authSlice.js";
 import { setLikedVideos } from "./features/videosSlice.js";
@@ -147,29 +147,21 @@ function App() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get(
-          "/api/v1/users/current-user",
-          { withCredentials: true }
-        );
+        const res = await axiosInstance.get("/users/current-user");
         // Handle both response formats: { data: user } or just { user }
         const userData = res.data?.data || res.data;
         if (userData) {
           dispatch(login(userData));
           try {
             // fetch list of channels the user has subscribed to
-            const subsRes = await axios.get(
-              `/api/v1/channel/u/${userData._id}`,
-              { withCredentials: true }
-            );
+            const subsRes = await axiosInstance.get(`/channel/u/${userData._id}`);
             const channels = (subsRes.data?.subscribedChannels || []).map((c) => String(c.channelId));
             dispatch(setSubscribedChannels(channels));
           } catch (err) {
             console.log('Failed to fetch subscribed channels', err);
           }
           try {
-            const likedRes = await axios.get("/api/v1/like/videos", {
-              withCredentials: true,
-            });
+            const likedRes = await axiosInstance.get("/like/videos");
             const likedList = likedRes.data?.data || likedRes.data || [];
             const likedIds = likedList
               .map((item) => item.video?._id || item.video || item._id)

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 import "./LibraryPage.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -31,26 +31,26 @@ export default function LibraryPage() {
       setLoading(true);
 
       const [historyRes, watchLaterRes, playlistRes, likedRes] = await Promise.all([
-        axios
-          .get("/api/v1/users/history", { withCredentials: true })
+        axiosInstance
+          .get("/users/history")
           .catch((err) => {
             console.error("History fetch error:", err);
             return { data: { data: [] } };
           }),
-        axios
-          .get("/api/v1/watch-later", { withCredentials: true })
+        axiosInstance
+          .get("/watch-later")
           .catch((err) => {
             console.error("Watch later fetch error:", err);
             return { data: { data: [] } };
           }),
-        axios
-          .get("/api/v1/playlist/user", { withCredentials: true })
+        axiosInstance
+          .get("/playlist/user")
           .catch((err) => {
             console.error("Playlists fetch error:", err);
             return { data: { data: [] } };
           }),
-        axios
-          .get("/api/v1/like/videos", { withCredentials: true })
+        axiosInstance
+          .get("/like/videos")
           .catch((err) => {
             console.error("Liked videos fetch error:", err);
             return { data: { data: [] } };

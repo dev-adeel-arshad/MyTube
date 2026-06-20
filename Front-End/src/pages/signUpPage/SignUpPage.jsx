@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../../components/Toast/Toast.jsx";
@@ -19,12 +19,14 @@ function SignupPage() {
 
   const [avatar, setAvatar] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
 
     try {
+      setSubmitting(true);
       const data = new FormData();
 
       data.append("fullname", formData.fullname);
@@ -34,10 +36,10 @@ function SignupPage() {
       data.append("avatar", avatar);
       if (coverImage) data.append("coverImage", coverImage);
 
-      const response = await axios.post(
-        "/api/v1/users/register",
+      const response = await axiosInstance.post(
+        "/users/register",
         data,
-        { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true }
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
 
       if (response.data?.data?.user) {
@@ -48,16 +50,17 @@ function SignupPage() {
 
     } catch (error) {
       showToast(error.response?.data?.message || "Registration failed", "error");
+    } finally {
+      setSubmitting(false);
     }
   };
 
   const handleVerify = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        "/api/v1/users/verify-email",
-        { email: pendingEmail, code: verificationCode },
-        { withCredentials: true }
+      await axiosInstance.post(
+        "/users/verify-email",
+        { email: pendingEmail, code: verificationCode }
       );
       showToast("Email verified! You can now log in.", "success");
       setTimeout(() => navigate("/login"), 150);
@@ -68,10 +71,9 @@ function SignupPage() {
 
   const handleResend = async () => {
     try {
-      await axios.post(
-        "/api/v1/users/resend-verification",
-        { email: pendingEmail },
-        { withCredentials: true }
+      await axiosInstance.post(
+        "/users/resend-verification",
+        { email: pendingEmail }
       );
       showToast("Verification code resent.", "info");
     } catch (error) {
@@ -160,7 +162,9 @@ function SignupPage() {
             </div>
           </div>
 
-          <button type="submit" className="signup-btn primary">Create Account</button>
+          <button type="submit" className="signup-btn primary" disabled={submitting}>
+            {submitting ? "Creating account..." : "Create Account"}
+          </button>
         </form>
       )}
 

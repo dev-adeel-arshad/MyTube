@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setSubscribedChannels } from "../../features/authSlice.js";
@@ -41,7 +41,7 @@ export default function SubscriptionsPage() {
   const fetchSubscribedChannelsFromApi = async (userId) => {
     try {
       setLoading(true);
-      const res = await axios.get(`/api/v1/channel/u/${userId}`, { withCredentials: true });
+      const res = await axiosInstance.get(`/channel/u/${userId}`);
       const channelsList = res.data?.subscribedChannels || [];
       const ids = channelsList.map((c) => String(c.channelId));
       dispatch(setSubscribedChannels(ids));
@@ -65,17 +65,14 @@ export default function SubscriptionsPage() {
 
       for (const channelId of channelIds) {
         try {
-          const channelRes = await axios.get(`/api/v1/users/${channelId}`, {
-            withCredentials: true,
-          });
+          const channelRes = await axiosInstance.get(`/users/${channelId}`);
           const channelData = channelRes.data?.data || channelRes.data;
           if (channelData && channelData._id) {
             channelsList.push(channelData);
           }
 
-          const videosRes = await axios.get(
-            `/api/v1/videos?owner=${channelId}&limit=1000`,
-            { withCredentials: true }
+          const videosRes = await axiosInstance.get(
+            `/videos?owner=${channelId}&limit=1000`
           );
           const channelVideos = videosRes.data?.videos || [];
           allVideos.push(...channelVideos);

@@ -6,7 +6,7 @@
 .library-page {
   background: var(--bg-primary);
   min-height: 100vh;
-  margin-left: 100px;
+  margin-left: 0;
   padding: 28px 24px 60px;
 }
 
@@ -160,7 +160,7 @@
 
 /*  Responsive  */
 @media (max-width: 900px) {
-  .library-page { margin-left: 80px; }
+  .library-page { margin-left: 0; }
   .library-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
 }
 

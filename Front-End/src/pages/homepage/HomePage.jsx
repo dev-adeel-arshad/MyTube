@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
-import "./HomePage.css";
+import axiosInstance from "../../api/axiosInstance.js";
+import "./Homepage.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import VideoMenu from "../../components/VideoMenu/VideoMenu.jsx";
@@ -27,9 +27,8 @@ function HomePage() {
       try {
         setLoading(true);
 
-        const res = await axios.get(
-          `/api/v1/videos?page=${page}&limit=${limit}`,
-          { withCredentials: true }
+        const res = await axiosInstance.get(
+          `/videos?page=${page}&limit=${limit}`
         );
 
         setVideos(res.data.videos);

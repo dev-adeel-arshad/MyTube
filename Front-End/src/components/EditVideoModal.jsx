@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance.js";
 import "./EditMediaModal.css";
 import { VIDEO_CATEGORIES } from "../utils/videoCategories.js";
 
@@ -44,9 +44,7 @@ export default function EditVideoModal({ isOpen, onClose, video, onUpdated }) {
         formData.append("thumbnail", thumbnailFile);
       }
 
-      const res = await axios.patch(`/api/v1/videos/${video._id}`, formData, {
-        withCredentials: true,
-      });
+      const res = await axiosInstance.patch(`/videos/${video._id}`, formData);
       const updated = res.data?.video || res.data?.data || res.data;
       if (updated?._id) {
         onUpdated?.(updated, "Video updated");

@@ -10,7 +10,7 @@
   width: 100%;
   min-height: 100vh;
   background: var(--bg-primary);
-  margin-left: 100px;
+  margin-left: 0;
 }
 
 .tweets-container {
@@ -124,7 +124,7 @@
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
-  .tweets-page { margin-left: 80px; }
+  .tweets-page { margin-left: 0; }
 }
 
 @media (max-width: 768px) {

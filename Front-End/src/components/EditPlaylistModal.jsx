@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance.js";
 import AddVideosToExistingPlaylistModal from "./AddVideosToExistingPlaylistModal.jsx";
 import "./EditMediaModal.css";
 
@@ -22,9 +22,7 @@ export default function EditPlaylistModal({
     if (!playlistId) return;
     setLoading(true);
     try {
-      const res = await axios.get(`/api/v1/playlist/${playlistId}`, {
-        withCredentials: true,
-      });
+      const res = await axiosInstance.get(`/playlist/${playlistId}`);
       const data = res.data?.data || res.data?.playlist || res.data;
       setPlaylist(data);
       setName(data?.name || "");
@@ -58,10 +56,9 @@ export default function EditPlaylistModal({
     try {
       setSaving(true);
       setError("");
-      const res = await axios.patch(
-        `/api/v1/playlist/${playlistId}`,
-        { name: name.trim(), description: description.trim() },
-        { withCredentials: true }
+      const res = await axiosInstance.patch(
+        `/playlist/${playlistId}`,
+        { name: name.trim(), description: description.trim() }
       );
       const updated = res.data?.playlist || res.data?.data || res.data;
       if (updated?._id) {
@@ -80,10 +77,9 @@ export default function EditPlaylistModal({
     if (!playlistId || !videoId) return;
     try {
       setSaving(true);
-      await axios.patch(
-        `/api/v1/playlist/remove/${videoId}/${playlistId}`,
-        {},
-        { withCredentials: true }
+      await axiosInstance.patch(
+        `/playlist/remove/${videoId}/${playlistId}`,
+        {}
       );
       await fetchPlaylist();
       onUpdated?.(null, "Video removed");

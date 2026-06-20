@@ -2,7 +2,7 @@
   background: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
-  margin-left: 100px;
+  margin-left: 0;
   padding: 32px 40px;
   transition: background 0.35s ease, color 0.35s ease;
 }

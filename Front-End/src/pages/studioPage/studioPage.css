@@ -1,7 +1,7 @@
 .studio-page {
   background: var(--bg-primary);
   min-height: 100vh;
-  margin-left: 100px;
+  margin-left: 0;
   padding: 24px;
 }
 
@@ -519,7 +519,7 @@
 
 @media (max-width: 768px) {
   .studio-page {
-    margin-left: 80px;
+    margin-left: 0;
     padding: 16px;
   }
 
@@ -704,7 +704,7 @@
 
 @media (max-width: 480px) {
   .studio-page {
-    margin-left: 70px;
+    margin-left: 0;
     padding: 12px;
   }
 

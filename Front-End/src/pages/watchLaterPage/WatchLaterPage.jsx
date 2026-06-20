@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 import { useNavigate } from "react-router-dom";
 import "../libraryPage/LibraryPage.css";
 import "./WatchLaterPage.css";
@@ -21,9 +21,7 @@ export default function WatchLaterPage() {
   const fetchWatchLater = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("/api/v1/watch-later", {
-        withCredentials: true,
-      });
+      const res = await axiosInstance.get("/watch-later");
       const watchLaterData = Array.isArray(res.data?.data) ? res.data.data : [];
       setWatchLater(watchLaterData);
     } catch (err) {

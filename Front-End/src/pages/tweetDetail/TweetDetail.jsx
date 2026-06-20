@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Tweet from "../../components/tweet/Tweet";
@@ -23,10 +23,10 @@ export default function TweetDetail() {
     if (!id) return;
     (async () => {
       try {
-        const res = await axios.get(`/api/v1/tweets/${id}`);
+        const res = await axiosInstance.get(`/tweets/${id}`);
         setTweet(res.data?.tweet || res.data?.data || null);
         try {
-          await axios.post(`/api/v1/users/history/tweets/${id}`, {}, { withCredentials: true });
+          await axiosInstance.post(`/users/history/tweets/${id}`, {});
         } catch (err) {
           // ignore history errors
         }
@@ -43,7 +43,7 @@ export default function TweetDetail() {
     if (id) {
       (async () => {
         try {
-          const res = await axios.get(`/api/v1/tweets/${id}`);
+          const res = await axiosInstance.get(`/tweets/${id}`);
           setTweet(res.data?.tweet || res.data?.data || null);
         } catch (err) {
           console.error("Error refetching tweet:", err);

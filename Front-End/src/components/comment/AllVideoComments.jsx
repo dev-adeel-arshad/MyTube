@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 import { useParams } from "react-router-dom";
 import LoginPrompt from "../LoginPrompt";
 import "./AllVideoComments.css";
@@ -19,10 +19,7 @@ export default function AllVideoComments({ videoId: propVideoId, refType = "vide
 
     const fetchComments = async () => {
       try {
-        const result = await axios.get(
-          `/api/v1/comments/${videoId}?refType=${encodeURIComponent(refType)}`,
-          { withCredentials: true }
-        );
+        const result = await axiosInstance.get(`/comments/${videoId}?refType=${encodeURIComponent(refType)}`);
 
         // Backend returns ApiResponse with data.comments
         const commentsList = result.data?.data?.comments || result.data?.allComments || [];
@@ -33,7 +30,7 @@ export default function AllVideoComments({ videoId: propVideoId, refType = "vide
         await Promise.all(
           commentsList.map(async (c) => {
             try {
-              const r = await axios.get(`/api/v1/like/c/${c._id}`, { withCredentials: true });
+              const r = await axiosInstance.get(`/like/c/${c._id}`);
               const likes = r.data?.data || [];
               likesMap[c._id] = likes.length;
               const userId = currentUser?._id;
@@ -56,11 +53,7 @@ export default function AllVideoComments({ videoId: propVideoId, refType = "vide
 
   const handleLikeComment = async (commentId) => {
     try {
-      const res = await axios.post(
-        `/api/v1/like/toggle/c/${commentId}`,
-        {},
-        { withCredentials: true }
-      );
+      const res = await axiosInstance.post(`/like/toggle/c/${commentId}`, {});
 
       if (res.data?.data?.liked) {
         setLikedComments((prev) => ({
@@ -89,10 +82,7 @@ export default function AllVideoComments({ videoId: propVideoId, refType = "vide
     if (!window.confirm("Delete this comment?")) return;
 
     try {
-      await axios.delete(
-        `/api/v1/comments/c/${commentId}`,
-        { withCredentials: true }
-      );
+      await axiosInstance.delete(`/comments/c/${commentId}`);
       setComments((prev) => prev.filter((c) => c._id !== commentId));
     } catch (error) {
       console.error("Error deleting comment:", error);

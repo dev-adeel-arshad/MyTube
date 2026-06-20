@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance.js";
 import "./AddVideoToPlaylistModal.css";
 
 export default function AddVideoToPlaylistModal({
@@ -19,10 +19,7 @@ export default function AddVideoToPlaylistModal({
     (async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
-          `/api/v1/videos?owner=${currentUserId}`,
-          { withCredentials: true }
-        );
+        const response = await axiosInstance.get(`/videos?owner=${currentUserId}`);
         setVideos(response.data?.videos || []);
       } catch (error) {
         console.error("Failed loading videos", error);
@@ -45,11 +42,7 @@ export default function AddVideoToPlaylistModal({
     try {
       setSubmitting(true);
       for (const videoId of selectedVideoIds) {
-        await axios.patch(
-          `/api/v1/playlist/add/${videoId}/${playlistId}`,
-          {},
-          { withCredentials: true }
-        );
+        await axiosInstance.patch(`/playlist/add/${videoId}/${playlistId}`, {});
       }
       onVideoAdded?.();
       onClose?.();

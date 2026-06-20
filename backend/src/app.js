@@ -16,10 +16,13 @@ app.use(express.urlencoded({ extended: true, limit: "50kb" }));
 // Allow multiple frontend origins during local development and respect production setting
 const allowedOrigins = [
   process.env.FRONTEND_URL,
+  ...(process.env.FRONTEND_URLS || "").split(",").map((url) => url.trim()),
   "http://localhost:5173",
   "http://localhost:5174",
   "http://localhost:5175",
-].filter(Boolean);
+]
+  .filter(Boolean)
+  .map((url) => url.replace(/\/$/, ""));
 
 app.use(
   cors({

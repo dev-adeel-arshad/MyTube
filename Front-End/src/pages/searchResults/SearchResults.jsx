@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 import "./SearchResults.css";
 import VideoMenu from "../../components/VideoMenu/VideoMenu.jsx";
 import PlaylistSelectionModal from "../../components/PlaylistSelectionModal.jsx";
@@ -26,14 +26,8 @@ function SearchResults() {
       try {
         setLoading(true);
         const [videosRes, playlistsRes] = await Promise.all([
-          axios.get(
-            `/api/v1/videos/search/${encodeURIComponent(query)}?page=${page}&limit=${limit}`,
-            { withCredentials: true }
-          ),
-          axios.get(
-            `/api/v1/playlist/search/${encodeURIComponent(query)}?limit=8`,
-            { withCredentials: true }
-          ),
+          axiosInstance.get(`/videos/search/${encodeURIComponent(query)}?page=${page}&limit=${limit}`),
+          axiosInstance.get(`/playlist/search/${encodeURIComponent(query)}?limit=8`),
         ]);
         setVideos(videosRes.data?.videos || []);
         setPlaylists(playlistsRes.data?.playlists || playlistsRes.data?.data || []);

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 import Comment from "../../components/comment/Comment";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSubscribedChannel } from "../../features/authSlice.js";
@@ -44,11 +44,7 @@ function VideoPage() {
   const addLike = async () => {
     try {
       setIsLiking(true);
-      const res = await axios.post(
-        `/api/v1/like/toggle/v/${videoId}`,
-        {},
-        { withCredentials: true }
-      );
+      const res = await axiosInstance.post(`/like/toggle/v/${videoId}`, {});
 
       const liked = res?.data?.data?.liked;
       setAddlike(!!liked);
@@ -121,11 +117,7 @@ function VideoPage() {
         return;
       }
 
-      const res = await axios.post(
-        `/api/v1/channel/c/${channelId}`,
-        {},
-        { withCredentials: true }
-      );
+      const res = await axiosInstance.post(`/channel/c/${channelId}`, {});
 
       const subscribedFlag = res?.data?.subscribed;
       setSubscribed(!!subscribedFlag);
@@ -152,14 +144,11 @@ function VideoPage() {
 
   const playVideo = async () => {
     try {
-      const result = await axios.get(
-        `/api/v1/videos/${videoId}`,
-        { withCredentials: true }
-      );
+      const result = await axiosInstance.get(`/videos/${videoId}`);
 
       setVideo(result.data.video);
       try {
-        await axios.post(`/api/v1/users/history/${videoId}`, {}, { withCredentials: true });
+        await axiosInstance.post(`/users/history/${videoId}`, {});
       } catch (err) {
         // Ignore history errors so video playback is not blocked
       }
@@ -193,7 +182,7 @@ function VideoPage() {
     if (!videoId) return;
     const timeoutId = setTimeout(async () => {
       try {
-        const res = await axios.post(`/api/v1/videos/${videoId}/view`, {}, { withCredentials: true });
+        const res = await axiosInstance.post(`/videos/${videoId}/view`, {});
         const views = res.data?.data?.views;
         if (typeof views === "number") {
           setVideo((prev) => (prev ? { ...prev, views } : prev));
@@ -211,8 +200,8 @@ function VideoPage() {
     const loadCounts = async () => {
       try {
         const [likesRes, commentsRes] = await Promise.all([
-          axios.get(`/api/v1/like/v/${videoId}`, { withCredentials: true }),
-          axios.get(`/api/v1/comments/${videoId}?refType=video`, { withCredentials: true }),
+          axiosInstance.get(`/like/v/${videoId}`),
+          axiosInstance.get(`/comments/${videoId}?refType=video`),
         ]);
         const likes = likesRes.data?.data || [];
         setLikeCount(likes.length || 0);
@@ -242,7 +231,7 @@ function VideoPage() {
   useEffect(() => {
     const loadRecommendations = async () => {
       try {
-        const res = await axios.get("/api/v1/videos?limit=12");
+        const res = await axiosInstance.get("/videos?limit=12");
         const items = res.data?.videos || [];
         const filtered = items.filter((item) => item._id !== videoId);
         setRecommendedVideos(filtered);
@@ -259,7 +248,7 @@ function VideoPage() {
       try {
         const channelId = video?.owner?._id || video?.owner;
         if (!channelId) return;
-        const res = await axios.get(`/api/v1/videos?owner=${channelId}`);
+        const res = await axiosInstance.get(`/videos?owner=${channelId}`);
         const items = res.data?.videos || [];
         setChannelVideos(items.filter((item) => item._id !== videoId));
       } catch (err) {

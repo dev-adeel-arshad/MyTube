@@ -18,7 +18,7 @@
 .about-page {
   color: var(--text-primary);
   min-height: 100vh;
-  margin-left: 100px;
+  margin-left: 0;
   animation: aboutPageIn 0.4s ease both;
 }
 

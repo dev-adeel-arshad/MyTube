@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./Hamburger.css";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../../features/authSlice.js";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance.js";
 
 function Hamburger({ isOpen, setIsOpen }) {
   const sidebarRef = useRef(null);
@@ -36,9 +36,7 @@ function Hamburger({ isOpen, setIsOpen }) {
 
         for (const channelId of subscribedChannelsIds) {
           try {
-            const res = await axios.get(`/api/v1/users/${channelId}`, {
-              withCredentials: true,
-            });
+            const res = await axiosInstance.get(`/users/${channelId}`);
 
             const channelData = res.data?.data || res.data;
             if (channelData && (channelData._id || channelData.username)) {
@@ -77,9 +75,7 @@ function Hamburger({ isOpen, setIsOpen }) {
 
   const handleLogout = async () => {
     try {
-      await axios.post("/api/v1/users/logout", {}, { withCredentials: true });
-    } catch {
-      // ignore logout errors
+        await axiosInstance.post("/users/logout", {});
     } finally {
       dispatch(logOut());
       setIsOpen(false);
