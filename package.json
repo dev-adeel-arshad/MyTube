@@ -1,0 +1,10 @@
+{
+  "name": "mytube-full-stack",
+  "version": "1.0.0",
+  "description": "Full stack YouTube-like application",
+  "private": true,
+  "scripts": {
+    "build": "cd Front-End && npm install && npm run build",
+    "install": "npm install && cd Front-End && npm install && cd ../backend && npm install"
+  }
+}
